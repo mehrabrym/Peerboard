@@ -27,6 +27,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.*;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -395,9 +396,20 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 				toast.show();
                 getActivity().finish();
 				
-				Intent i = new Intent(getActivity(), HomepageActivity.class);
-				startActivity(i);
-				//getActivity().setContentView(R.layout.activity_homepage);
+				try {   
+                    GMailSender sender = new GMailSender("mehrabrym@gmail.com", "arnobfr1");
+                    sender.sendMail("Here is your PIN",   
+									"This is the veriPIN: Please enter it in the verification page of the app.",   
+									"mehrabrym@gmail.com",   
+									"mehrabrym@gmail.com");
+					Intent i = new Intent(getActivity(), HomepageActivity.class);
+					startActivity(i);
+					//getActivity().setContentView(R.layout.activity_homepage);
+                } catch (Exception e) {   
+                    Log.e("SendMail", e.getMessage(), e);   
+                }
+				
+				
             } else {
 				Context context = getActivity();
 				CharSequence text = "Email invalid/not registered " + veriPIN;
