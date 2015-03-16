@@ -144,6 +144,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Loa
         mEmailSignUpButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
+					Intent i = new Intent(getActivity(), HomepageActivity.class);
+					startActivity(i);
 					//attemptSignUp();
 				}
 			});
@@ -414,7 +416,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Loa
                 Transport.send(message);
 
             } catch (MessagingException e) {
-                throw new RuntimeException(e);
+				Log.e("Sendmail", e.getMessage(), e);
+                //throw new RuntimeException(e);
             }
 
             //Rayun: code for database communication
