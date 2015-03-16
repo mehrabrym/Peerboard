@@ -400,7 +400,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Loa
 
             Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication("mehrabrym@gmail.com", "arnobfr1"); //TODO: Problem - password in plain text
+                    return new PasswordAuthentication("mehrabrym@gmail.com", "abcdefthispasswordisnotgoingtowork"); //TODO: Problem - password in plain text
                 }
             });
 
