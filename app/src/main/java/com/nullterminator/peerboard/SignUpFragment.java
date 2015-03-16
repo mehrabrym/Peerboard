@@ -50,7 +50,7 @@ import java.util.List;
  * A signup screen that offers signup via email/password.
  */
 
-public class SignUpFragment extends Fragment implements View.OnClickListener
+public class SignUpFragment extends Fragment implements View.OnClickListener, LoaderCallbacks<Cursor>
 {
 	int reg = 0;
 	String name = "";

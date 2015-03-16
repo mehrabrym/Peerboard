@@ -49,7 +49,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginFragment extends Fragment implements View.OnClickListener {
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.MessagingException;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.Security;
+import java.util.Properties;
+
+public class LoginFragment extends Fragment implements View.OnClickListener, LoaderCallbacks<Cursor> {
 
     int veriPIN = 0;
 	String name = "";
@@ -365,7 +381,41 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 				e.printStackTrace();
 			}
 
+            /*try {
+                GMailSender sender = new GMailSender("mehrabrym@gmail.com", "arnobfr2");
+                sender.sendMail("Here is your PIN",
+                        "This is the veriPIN: Please enter it in the verification page of the app.",
+                        "mehrabrym@gmail.com",
+                        "mehrabrym@gmail.com");
+            } catch (Exception e) {
+                Log.e("SendMail", e.getMessage(), e);
+            }*/
 
+            Properties props = new Properties();
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.socketFactory.port", "465");
+            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.port", "465");
+
+            Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication("mehrabrym@gmail.com", "arnobfr1"); //TODO: Problem - password in plain text
+                }
+            });
+
+            try {
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress("mehrabrym@gmail.com"));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("mehrabrym@gmail.com"));
+                message.setSubject("Your PIN for registering at Peerboard!");
+                message.setContent("This is the veriPIN: " + veriPIN + ". Please enter it in the verification page of the app.", "text/html; charset=utf-8");
+
+                Transport.send(message);
+
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
 
             //Rayun: code for database communication
 
@@ -395,21 +445,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 				Toast toast = Toast.makeText(context, text, duration);
 				toast.show();
                 getActivity().finish();
-				
-				try {   
-                    GMailSender sender = new GMailSender("mehrabrym@gmail.com", "arnobfr1");
-                    sender.sendMail("Here is your PIN",   
-									"This is the veriPIN: Please enter it in the verification page of the app.",   
-									"mehrabrym@gmail.com",   
-									"mehrabrym@gmail.com");
-					Intent i = new Intent(getActivity(), HomepageActivity.class);
-					startActivity(i);
-					//getActivity().setContentView(R.layout.activity_homepage);
-                } catch (Exception e) {   
-                    Log.e("SendMail", e.getMessage(), e);   
-                }
-				
-				
+
+                Intent i = new Intent(getActivity(), HomepageActivity.class);
+                startActivity(i);
             } else {
 				Context context = getActivity();
 				CharSequence text = "Email invalid/not registered " + veriPIN;
