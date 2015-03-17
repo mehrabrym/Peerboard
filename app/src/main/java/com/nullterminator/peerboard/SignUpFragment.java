@@ -38,6 +38,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.nullterminator.peerboard.R;
 import java.io.UnsupportedEncodingException;
@@ -118,6 +120,14 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Lo
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
+					// Get a reference to the score_name_entry object in score.xml
+					RelativeLayout submitScoreLayout = (RelativeLayout)getActivity().findViewById(R.id.tab_signup_rlayout);
+					submitScoreLayout.removeAllViews();
+
+					// Create new LayoutInflater - this has to be done this way, as you can't directly inflate an XML without creating an inflater object first
+					LayoutInflater inflater = getActivity().getLayoutInflater();
+					submitScoreLayout.addView(inflater.inflate(R.layout.activity_blank, null));
+					
 					//attemptLogin();
 				}
 			});
