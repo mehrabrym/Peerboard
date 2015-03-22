@@ -126,7 +126,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Lo
 
 					// Create new LayoutInflater - this has to be done this way, as you can't directly inflate an XML without creating an inflater object first
 					LayoutInflater inflater = getActivity().getLayoutInflater();
-					submitScoreLayout.addView(inflater.inflate(R.layout.activity_blank, null));
+					submitScoreLayout.addView(inflater.inflate(R.layout.tab_veripin, null));
 					
 					//attemptLogin();
 				}
