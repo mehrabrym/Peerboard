@@ -282,7 +282,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Loa
         }
     }
 
-    @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(getActivity(),
 								// Retrieve data rows for the device user's 'profile' contact.
@@ -299,9 +298,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Loa
 								ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     } //TODO: Figure this out
 
-    @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
+        List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
@@ -311,7 +309,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Loa
         addEmailsToAutoComplete(emails);
     }
 
-    @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
     }
@@ -330,7 +327,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Loa
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-			new ArrayAdapter<String>(getActivity(),
+			new ArrayAdapter<>(getActivity(),
 									 android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -366,6 +363,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Loa
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             } catch (UnsupportedEncodingException e) {
+                e.getMessage();
                 e.printStackTrace();
             }
 
@@ -455,9 +453,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Loa
 				Context context = getActivity();
 				CharSequence text = "Email invalid/not registered " + veriPIN;
 				int duration = Toast.LENGTH_SHORT;
-
-				Toast toast = Toast.makeText(context, text, duration);
-				toast.show();
+                if(context!=null){
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
